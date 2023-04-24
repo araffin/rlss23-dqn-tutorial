@@ -1,4 +1,4 @@
-from dqn_tutorial.collect_data import collect_data, save_data
+from dqn_tutorial.collect_data import collect_data, load_data, save_data
 
 
 def test_collect_data(tmp_path):
@@ -9,3 +9,6 @@ def test_collect_data(tmp_path):
     assert len(data.observations) == 10_000
     # Save collected data using numpy
     save_data(data, output_filename)
+    # load data
+    data = load_data(output_filename)
+    assert len(data.observations) == 10_000

@@ -34,8 +34,8 @@ def collect_data(env_id: str, n_steps: int = 50_000) -> OfflineData:
     next_observations = np.zeros((n_steps, *env.observation_space.shape))
     # Discrete actions
     actions = np.zeros((n_steps, 1))
-    rewards = np.zeros((n_steps, 1))
-    terminateds = np.zeros((n_steps, 1))
+    rewards = np.zeros((n_steps,))
+    terminateds = np.zeros((n_steps,))
 
     done = False
     obs, _ = env.reset()
@@ -49,9 +49,9 @@ def collect_data(env_id: str, n_steps: int = 50_000) -> OfflineData:
         observations[idx, :] = obs
         next_observations[idx, :] = next_obs
         actions[idx, :] = action
-        rewards[idx, :] = reward
+        rewards[idx] = reward
         # Only record true termination (timeout will never happened with real data)
-        terminateds[idx, :] = terminated
+        terminateds[idx] = terminated
         obs = next_obs
         # Check if the episode is over
         done = terminated or truncated
@@ -79,12 +79,34 @@ def save_data(data: OfflineData, path: Path) -> None:
     np.savez(
         path,
         **dict(
-            obs=data.observations,
-            next_obs=data.next_observations,
+            observations=data.observations,
+            next_observations=data.next_observations,
             rewards=data.rewards,
             actions=data.actions,
-            terminated=data.terminateds,
+            terminateds=data.terminateds,
         ),
+    )
+
+
+def load_data(path: Path) -> OfflineData:
+    """
+    Load OfflineData from a save numpy file.
+
+    :param path: Where is the saved the data
+    :return: Saved offline data that contains a list of transitions.
+    """
+    path_str = str(path)
+    if not path_str.endswith(".npz"):
+        # Add extension
+        path_str += ".npz"
+    # unpack
+    saved_data = np.load(path_str)
+    return OfflineData(
+        saved_data["observations"],
+        saved_data["next_observations"],
+        saved_data["actions"],
+        saved_data["rewards"],
+        saved_data["terminateds"],
     )
 
 

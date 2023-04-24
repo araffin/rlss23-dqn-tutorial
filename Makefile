@@ -1,4 +1,4 @@
-LINT_PATHS=dqn_tutorial/
+LINT_PATHS=dqn_tutorial/ tests/
 
 pytest:
 	python3 -m pytest --cov-report html --cov-report term --cov=. -v --color=yes -m "not expensive"
