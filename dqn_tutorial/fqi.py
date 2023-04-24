@@ -2,7 +2,7 @@
 Fitted Q-Iteration
 as described in "Tree-based batch mode reinforcement learning"
 by Ernst et al. and
-"Neural fitted Q iteration-first" by Martin Riedmiller.
+"Neural fitted Q iteration" by Martin Riedmiller.
 """
 from functools import partial
 from pathlib import Path
@@ -52,7 +52,7 @@ def create_model_input(
 
 
 def get_q_values(
-    sklearn_model: RegressorMixin,
+    model: RegressorMixin,
     obs: np.ndarray,
     n_actions: int,
     features_extractor: Optional[PolynomialFeatures] = None,
@@ -61,7 +61,7 @@ def get_q_values(
     Retrieve the q-values for a set of observations.
     qf(q_t, action) for all possible actions.
 
-    :param sklearn_model: Q-value estimator
+    :param model: Q-value estimator
     :param obs: A batch of observations
     :param n_actions: Number of discrete actions.
     :param features_extractor: Optionally a preprocessor
@@ -81,14 +81,14 @@ def get_q_values(
         model_input = create_model_input(obs, actions, features_extractor)
         # Predict q-values for the given observation/action combination
         # shape: (batch_size, 1)
-        predicted_q_values = sklearn_model.predict(model_input)
+        predicted_q_values = model.predict(model_input)
         q_values[:, action_idx] = predicted_q_values
 
     return q_values
 
 
 def evaluate(
-    sklearn_model: RegressorMixin,
+    model: RegressorMixin,
     env: gym.Env,
     n_eval_episodes: int = 10,
     features_extractor: Optional[PolynomialFeatures] = None,
@@ -102,13 +102,14 @@ def evaluate(
     while total_episodes < n_eval_episodes:
         # Retrieve the q-values for the current observation
         q_values = get_q_values(
-            sklearn_model,
+            model,
             obs[np.newaxis, ...],
             int(env.action_space.n),
             features_extractor,
         )
-        # Keep only the action that maximize the q-value for each state
+        # Select the action that maximizes the q-value for each state
         best_action = int(np.argmax(q_values, axis=1).item())
+        # Send the action to the env
         obs, reward, terminated, truncated, _ = env.step(best_action)
         episode_reward += float(reward)
 
