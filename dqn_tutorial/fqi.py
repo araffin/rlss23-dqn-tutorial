@@ -149,7 +149,7 @@ if __name__ == "__main__":  # pragma: no cover
 
     env_id = "CartPole-v1"
     output_filename = Path("data") / f"{env_id}_data.npz"
-
+    # Create test environment
     env = gym.make(env_id, render_mode=render_mode)
 
     assert isinstance(env.action_space, spaces.Discrete), "FQI only support discrete actions"
@@ -168,6 +168,7 @@ if __name__ == "__main__":  # pragma: no cover
     try:
         for iter_idx in range(n_iterations):
             # Construct TD(0) target
+            # using current model and the next observations
             next_q_values = get_q_values(
                 model,
                 data.next_observations,
