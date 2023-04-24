@@ -49,3 +49,4 @@ src
 
 MUJOCO_LOG.TXT
 _version.py
+data/*

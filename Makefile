@@ -1,16 +1,16 @@
 LINT_PATHS=dqn_tutorial/
 
-# pytest:
-# 	./scripts/run_tests.sh
+pytest:
+	python3 -m pytest --cov-report html --cov-report term --cov=. -v --color=yes -m "not expensive"
 
 mypy:
 	mypy ${LINT_PATHS}
 
 missing-annotations:
-	mypy --disallow-untyped-calls --disallow-untyped-defs --ignore-missing-imports stable_baselines3
+	mypy --disallow-untyped-calls --disallow-untyped-defs --ignore-missing-imports dqn_tutorial
 
-# missing docstrings
-# pylint -d R,C,W,E -e C0116 stable_baselines3 -j 4
+# missing-docstrings:
+# 	pylint -d R,C,W,E -e C0116 dqn_tutorial -j 4
 
 type: mypy
 

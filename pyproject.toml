@@ -82,6 +82,8 @@ show_error_codes = true
 # exclude = """(?x)(
 #     stable_baselines3/common/buffers.py$
 #   )"""
+# plugins = ["numpy.typing.mypy_plugin"]
+# disable_error_code = "assignment"
 
 [tool.pytest.ini_options]
 # Deterministic ordering for tests; useful for pytest-xdist.
@@ -100,6 +102,7 @@ disable_warnings = ["couldnt-parse"]
 branch = false
 omit = [
   "tests/*",
+  "dqn_tutorial/_version.py",
 ]
 
 [tool.coverage.report]
