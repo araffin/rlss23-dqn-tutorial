@@ -1,8 +1,9 @@
+import gymnasium as gym
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 
-from dqn_tutorial.fqi import create_model_input, get_q_values
+from dqn_tutorial.fqi import create_model_input, evaluate, get_q_values
 
 
 def test_model_input():  # pragma: no cover
@@ -27,3 +28,13 @@ def test_q_values() -> None:
 
     q_values = get_q_values(model, obs, n_actions=3)
     assert q_values.shape == (10, 3)
+
+
+def test_evaluate():
+    model = LinearRegression()
+    env = gym.make("CartPole-v1")
+    model_input = np.ones((10, env.observation_space.shape[0] + 1))
+    # Fit on dummy data
+    model.fit(model_input, np.ones(10))
+
+    evaluate(model, env, n_eval_episodes=10)
