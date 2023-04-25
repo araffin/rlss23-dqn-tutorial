@@ -27,7 +27,8 @@ classifiers = [
 dependencies = [
     "numpy",
     "gymnasium[classic-control,box2d]>=0.28.1,<1.0",
-    "scikit-learn~=1.2",
+    "scikit-learn",
+    "torch>=1.7.0",
 ]
 
 [tool.setuptools_scm]
