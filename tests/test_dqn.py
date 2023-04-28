@@ -3,6 +3,7 @@ import numpy as np
 import torch as th
 
 from dqn_tutorial.dqn import QNetwork, ReplayBuffer, collect_one_step, linear_schedule
+from dqn_tutorial.dqn.dqn import run_dqn
 
 
 def test_q_net():
@@ -55,3 +56,7 @@ def test_linear_schedule():
     assert np.allclose(linear_schedule(0.0, 1.0, 50, 100), 0.5)
     assert np.allclose(linear_schedule(0.0, 1.0, 0, 100), 0.0)
     assert np.allclose(linear_schedule(0.0, 1.0, 100, 100), 1.0)
+
+
+def test_dqn_run():
+    run_dqn(n_timesteps=1000, evaluation_interval=500)

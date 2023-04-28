@@ -1,3 +1,5 @@
+from typing import Optional
+
 import gymnasium as gym
 import numpy as np
 import torch as th
@@ -90,7 +92,7 @@ def evaluate_policy(eval_env: gym.Env, q_net: QNetwork, n_eval_episodes: int, ev
                 action_space=eval_env.action_space,
             )
             # Render
-            if eval_env.render_mode is not None:
+            if eval_env.render_mode is not None:  # pragma: no cover
                 eval_env.render()
             # Do one step in the environment
             obs, reward, terminated, truncated, _ = eval_env.step(action)
@@ -103,36 +105,46 @@ def evaluate_policy(eval_env: gym.Env, q_net: QNetwork, n_eval_episodes: int, ev
     print(f"Mean episode reward: {np.mean(episode_returns):.2f} +/- {np.std(episode_returns):.2f}")
 
 
-if __name__ == "__main__":
-    # Hyperparameters
-    # Name of the environment
-    env_id = "CartPole-v1"
-    # Max capacity of the replay buffer
-    replay_buffer_size = 50_000
+def run_dqn(
+    env_id: str = "CartPole-v1",
+    replay_buffer_size: int = 50_000,
     # Exploration schedule
     # (for the epsilon-greedy data collection)
-    exploration_initial_eps = 1.0
-    exploration_final_eps = 0.01
-    # Number of timesteps in total
-    n_timesteps = 20_000
-    # How often do we update the q-network
-    # (every update_interval steps)
-    update_interval = 2
-    # Learning rate for the gradient descent
-    learning_rate = 3e-4
-    # Minibatch size
-    batch_size = 64
-    # discount factor
-    gamma = 0.99
-    # Number of episodes to evaluate the policy
-    n_eval_episodes = 10
-    # How often do we evaluate the policy
-    evaluation_interval = 5_000
-    eval_render_mode = None  # "human"
-    # Random seed for the pseudo random generator
-    seed = 2023
-    print(f"Seed = {seed} - {env_id}")
+    exploration_initial_eps: float = 1.0,
+    exploration_final_eps: float = 0.01,
+    n_timesteps: int = 20_000,
+    update_interval: int = 2,
+    learning_rate: float = 3e-4,
+    batch_size: int = 64,
+    gamma: float = 0.99,
+    n_eval_episodes: int = 10,
+    evaluation_interval: int = 1000,
+    eval_exploration_rate: float = 0.0,
+    seed: int = 2023,
+    # device: Union[th.device, str] = "cpu",
+    eval_render_mode: Optional[str] = None,  # "human", "rgb_array", None
+) -> QNetwork:
+    """
+    Run Deep Q-Learning (DQN) on a given environment.
+    (without target network)
 
+    :param env_id: Name of the environment
+    :param replay_buffer_size: Max capacity of the replay buffer
+    :param exploration_initial_eps: The initial exploration rate
+    :param exploration_final_eps: The final exploration rate
+    :param n_timesteps: Number of timesteps in total
+    :param update_interval: How often to update the Q-network
+        (every update_interval steps)
+    :param learning_rate: The learning rate to use for the optimizer
+    :param batch_size: The minibatch size
+    :param gamma: The discount factor
+    :param n_eval_episodes: The number of episodes to evaluate the policy on
+    :param evaluation_interval: How often to evaluate the policy
+    :param eval_exploration_rate: The exploration rate to use during evaluation
+    :param seed: Random seed for the pseudo random generator
+    :param eval_render_mode: The render mode to use for evaluation
+    """
+    # Set seed for reproducibility
     # Seed Numpy as PyTorch pseudo random generators
     # Seed Numpy RNG
     np.random.seed(seed)
@@ -180,3 +192,8 @@ if __name__ == "__main__":
             print(f"Evaluation at step {current_step}:")
             # Evaluate the current greedy policy (deterministic policy)
             evaluate_policy(eval_env, q_net, n_eval_episodes, eval_exploration_rate=0.0)
+    return q_net
+
+
+if __name__ == "__main__":  # pragma: no cover
+    run_dqn()
