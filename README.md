@@ -24,6 +24,7 @@ Website: https://rlsummerschool.com/
 6. Write DQN update rule (no target network)
 
 Bonus: linear schedule?
++ linear_schedule with fraction (reach final exploration before end of budget)
 
 #### With target network
 
@@ -33,6 +34,7 @@ Explore different value for the target update,
 use soft update instead of hard-copy.
 
 Compare to SB3/SBX results.
+Analyse learned q-value.
 
 Bonus: CNN and learn on Pong
 + learn discretized version of upkie?
