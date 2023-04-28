@@ -23,6 +23,8 @@ Website: https://rlsummerschool.com/
 5. Epsilon-greedy data collection (re-using FQI)
 6. Write DQN update rule (no target network)
 
+Bonus: linear schedule?
+
 #### With target network
 
 6. Add DQN target network and periodic copy

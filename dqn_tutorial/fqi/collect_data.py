@@ -3,6 +3,7 @@ from pathlib import Path
 
 import gymnasium as gym
 import numpy as np
+from gymnasium import spaces
 
 
 @dataclass
@@ -29,7 +30,7 @@ def collect_data(env_id: str, n_steps: int = 50_000) -> OfflineData:
     # Create the Gym env
     env = gym.make(env_id)
 
-    assert isinstance(env.observation_space, gym.spaces.Box)
+    assert isinstance(env.observation_space, spaces.Box)
     observations = np.zeros((n_steps, *env.observation_space.shape))
     next_observations = np.zeros((n_steps, *env.observation_space.shape))
     # Discrete actions
@@ -57,6 +58,7 @@ def collect_data(env_id: str, n_steps: int = 50_000) -> OfflineData:
         done = terminated or truncated
 
         if done:
+            # Don't forget to reset the env at the end of an episode
             obs, _ = env.reset()
     return OfflineData(
         observations,
