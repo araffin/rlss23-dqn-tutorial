@@ -1,4 +1,4 @@
-from dqn_tutorial.collect_data import collect_data, load_data, save_data
+from dqn_tutorial.fqi import collect_data, load_data, save_data
 
 
 def test_collect_data(tmp_path):

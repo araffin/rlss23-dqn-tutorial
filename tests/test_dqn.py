@@ -2,7 +2,7 @@ import gymnasium as gym
 import numpy as np
 import torch as th
 
-from dqn_tutorial.q_network import QNetwork
+from dqn_tutorial.dqn import QNetwork
 
 
 def test_q_net():

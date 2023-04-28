@@ -1,7 +1,7 @@
 import gymnasium as gym
 from gymnasium import spaces
 
-from dqn_tutorial.replay_buffer import ReplayBuffer
+from dqn_tutorial.dqn import ReplayBuffer
 
 
 def test_buffer() -> None:

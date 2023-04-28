@@ -19,7 +19,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import PolynomialFeatures
 
-from dqn_tutorial.collect_data import load_data
+from dqn_tutorial.fqi import load_data
 
 
 def create_model_input(
