@@ -32,6 +32,9 @@ use soft update instead of hard-copy.
 
 Compare to SB3/SBX results.
 
+Bonus: CNN and learn on Pong
++ learn discretized version of upkie?
+
 #### DQN Extensions
 - Prioritized-Experience Replay (PER)?
 - Double DQN (DDQN)

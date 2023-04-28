@@ -18,8 +18,10 @@ class ReplayBuffer:
     A simple replay buffer class to store and sample transitions.
 
     :param buffer_size: Max number of transitions to store
-    :param observation_space: Observation space of the env
-    :param action_space: Action space of the env
+    :param observation_space: Observation space of the env,
+        contains information about the observation type and shape.
+    :param action_space: Action space of the env,
+        contains information about the number of actions.
     """
 
     def __init__(
