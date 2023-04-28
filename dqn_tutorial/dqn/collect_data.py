@@ -77,3 +77,9 @@ def collect_one_step(
         # Don't forget to reset the env at the end of an episode
         obs, _ = env.reset()
     return obs
+
+
+def linear_schedule(initial_value: float, final_value: float, current_step: int, max_steps: int) -> float:
+    # Compute current progress (in [0, 1], 0 being the start)
+    progress = current_step / max_steps
+    return initial_value + progress * (final_value - initial_value)

@@ -2,7 +2,7 @@ import gymnasium as gym
 import numpy as np
 import torch as th
 
-from dqn_tutorial.dqn import QNetwork, ReplayBuffer, collect_one_step
+from dqn_tutorial.dqn import QNetwork, ReplayBuffer, collect_one_step, linear_schedule
 
 
 def test_q_net():
@@ -38,11 +38,20 @@ def test_collect_data():
     exploration_rate = exploration_initial_eps
     n_steps = 100
     for step in range(n_steps + 1):
-        progress = step / n_steps
-        exploration_rate = exploration_initial_eps + progress * (exploration_final_eps - exploration_initial_eps)
+        exploration_rate = linear_schedule(exploration_initial_eps, exploration_final_eps, step, n_steps)
         if step == 0:
             assert exploration_rate == exploration_initial_eps
 
         obs = collect_one_step(env, q_net, buffer, obs, exploration_rate=exploration_rate)
 
     assert np.allclose(exploration_rate, exploration_final_eps)
+
+
+def test_linear_schedule():
+    # Test the linear schedule function
+    assert linear_schedule(1.0, 0.1, 0, 100) == 1.0
+    assert np.allclose(linear_schedule(1.0, 0.1, 100, 100), 0.1)
+    assert np.allclose(linear_schedule(1.0, 0.0, 50, 100), 0.5)
+    assert np.allclose(linear_schedule(0.0, 1.0, 50, 100), 0.5)
+    assert np.allclose(linear_schedule(0.0, 1.0, 0, 100), 0.0)
+    assert np.allclose(linear_schedule(0.0, 1.0, 100, 100), 1.0)

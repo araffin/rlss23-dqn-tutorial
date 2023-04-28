@@ -1,16 +1,45 @@
 from dataclasses import dataclass
 
 import numpy as np
+import torch as th
 from gymnasium import spaces
 
 
 @dataclass
+class TorchReplayBufferSamples:
+    observations: th.Tensor
+    next_observations: th.Tensor
+    actions: th.Tensor
+    rewards: th.Tensor
+    terminated: th.Tensor
+
+
+@dataclass
 class ReplayBufferSamples:
+    """
+    A dataclass containing transitions from the replay buffer.
+    """
+
     observations: np.ndarray
     next_observations: np.ndarray
     actions: np.ndarray
     rewards: np.ndarray
     terminated: np.ndarray
+
+    def to_torch(self, device: str = "cpu") -> TorchReplayBufferSamples:
+        """
+        Convert the samples to PyTorch tensors.
+
+        :param device: PyTorch device
+        :return: Samples as PyTorch tensors
+        """
+        return TorchReplayBufferSamples(
+            observations=th.as_tensor(self.observations, device=device),
+            next_observations=th.as_tensor(self.next_observations, device=device),
+            actions=th.as_tensor(self.actions, device=device),
+            rewards=th.as_tensor(self.rewards, device=device),
+            terminated=th.as_tensor(self.terminated, device=device),
+        )
 
 
 class ReplayBuffer:
