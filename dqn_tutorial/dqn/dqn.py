@@ -61,6 +61,9 @@ def dqn_update(
     # Compute the Mean Squared Error (MSE) loss
     # Optionally, one can use a Huber loss instead of the MSE loss
     loss = ((current_q_values - td_target) ** 2).mean()
+    # Huber loss
+    # loss = th.nn.functional.smooth_l1_loss(current_q_values, td_target)
+
     # Reset gradients
     optimizer.zero_grad()
     # Compute the gradients
@@ -248,3 +251,27 @@ if __name__ == "__main__":  # pragma: no cover
         eval_exploration_rate=0.0,
         seed=2022,
     )
+
+    # Same, for the LunarLander-v2 environment
+    # run_dqn(
+    #     env_id="LunarLander-v2",
+    #     replay_buffer_size=50_000,
+    #     # Note: you can remove the target network
+    #     # by setting target_network_update_interval=1
+    #     target_network_update_interval=250,
+    #     learning_starts=100,
+    #     exploration_initial_eps=1.0,
+    #     exploration_final_eps=0.1,
+    #     exploration_fraction=0.12,
+    #     n_timesteps=100_000,
+    #     update_interval=2,
+    #     learning_rate=6e-4,
+    #     batch_size=128,
+    #     gamma=0.99,
+    #     n_eval_episodes=10,
+    #     evaluation_interval=10000,
+    #     # No exploration during evaluation
+    #     # (deteministic policy)
+    #     eval_exploration_rate=0.0,
+    #     seed=2022,
+    # )
