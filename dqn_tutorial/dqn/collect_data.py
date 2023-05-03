@@ -80,6 +80,19 @@ def collect_one_step(
 
 
 def linear_schedule(initial_value: float, final_value: float, current_step: int, max_steps: int) -> float:
+    """
+    Linear schedule for the exploration rate (epsilon).
+    Note: we clip the value so the schedule is constant after reaching the final value
+    at `max_steps`.
+
+    :param initial_value: Initial value of the schedule.
+    :param final_value: Final value of the schedule.
+    :param current_step: Current step of the schedule.
+    :param max_steps: Maximum number of steps of the schedule.
+    :return: The current value of the schedule.
+    """
     # Compute current progress (in [0, 1], 0 being the start)
     progress = current_step / max_steps
+    # Clip the progress so the schedule is constant after reaching the final value
+    progress = min(progress, 1.0)
     return initial_value + progress * (final_value - initial_value)

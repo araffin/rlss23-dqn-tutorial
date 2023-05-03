@@ -10,9 +10,8 @@ from dqn_tutorial.dqn.q_network import QNetwork
 from dqn_tutorial.dqn.replay_buffer import ReplayBuffer
 
 
-def dqn_update(
+def dqn_update_no_target(
     q_net: QNetwork,
-    q_target_net: QNetwork,
     optimizer: th.optim.Optimizer,
     replay_buffer: ReplayBuffer,
     batch_size: int,
@@ -21,9 +20,9 @@ def dqn_update(
     """
     Perform one gradient step on the Q-network
     using the data from the replay buffer.
+    Note: this is the same as dqn_update in dqn.py, but without the target network.
 
     :param q_net: The Q-network to update
-    :param q_target_net: The target Q-network, to compute the td-target.
     :param optimizer: The optimizer to use
     :param replay_buffer: The replay buffer containing the transitions
     :param batch_size: The minibatch size, how many transitions to sample
@@ -35,8 +34,7 @@ def dqn_update(
 
     with th.no_grad():
         # Compute the Q-values for the next observations (batch_size, n_actions)
-        # using the target network
-        next_q_values = q_target_net(replay_data.next_observations)
+        next_q_values = q_net(replay_data.next_observations)
         # Follow greedy policy: use the one with the highest value
         # (batch_size,)
         next_q_values, _ = next_q_values.max(dim=1)
@@ -108,18 +106,13 @@ def evaluate_policy(eval_env: gym.Env, q_net: QNetwork, n_eval_episodes: int, ev
     print(f"Mean episode reward: {np.mean(episode_returns):.2f} +/- {np.std(episode_returns):.2f}")
 
 
-def run_dqn(
+def run_dqn_no_target(
     env_id: str = "CartPole-v1",
     replay_buffer_size: int = 50_000,
-    # How often do we copy the parameters from the Q-network to the target network
-    target_network_update_interval: int = 1000,
-    # Warmup phase
-    learning_starts: int = 100,
     # Exploration schedule
     # (for the epsilon-greedy data collection)
     exploration_initial_eps: float = 1.0,
     exploration_final_eps: float = 0.01,
-    exploration_fraction: float = 0.1,
     n_timesteps: int = 20_000,
     update_interval: int = 2,
     learning_rate: float = 3e-4,
@@ -138,16 +131,8 @@ def run_dqn(
 
     :param env_id: Name of the environment
     :param replay_buffer_size: Max capacity of the replay buffer
-    :param target_network_update_interval: How often do we copy the parameters
-         to the target network
-    :param learning_starts: Warmup phase to fill the replay buffer
-        before starting the optimization.
     :param exploration_initial_eps: The initial exploration rate
     :param exploration_final_eps: The final exploration rate
-    :param exploration_fraction: The fraction of the number of steps
-        during which the exploration rate is annealed from
-        initial_eps to final_eps.
-        After this many steps, the exploration rate remains constant.
     :param n_timesteps: Number of timesteps in total
     :param update_interval: How often to update the Q-network
         (every update_interval steps)
@@ -180,12 +165,7 @@ def run_dqn(
 
     # Create the q-network
     q_net = QNetwork(env.observation_space, env.action_space)
-    # Create the target network
-    q_target_net = QNetwork(env.observation_space, env.action_space)
-    # Copy the parameters of the q-network to the target network
-    q_target_net.load_state_dict(q_net.state_dict())
-
-    # Create the optimizer, we only optimize the parameters of the q-network
+    # Create the optimizer
     optimizer = th.optim.Adam(q_net.parameters(), lr=learning_rate)
 
     # Create the Replay buffer
@@ -198,22 +178,14 @@ def run_dqn(
             exploration_initial_eps,
             exploration_final_eps,
             current_step,
-            int(exploration_fraction * n_timesteps),
+            n_timesteps,
         )
         # Do one step in the environment following an epsilon-greedy policy
         # and store the transition in the replay buffer
         obs = collect_one_step(env, q_net, replay_buffer, obs, exploration_rate=exploration_rate)
-
-        # Update the target network
-        # by copying the parameters from the Q-network every target_network_update_interval steps
-        if (current_step % target_network_update_interval) == 0:
-            q_target_net.load_state_dict(q_net.state_dict())
-
-        # Update the Q-network every update_interval steps
-        # after learning_starts steps have passed (warmup phase)
-        if (current_step % update_interval) == 0 and current_step > learning_starts:
+        if (current_step % update_interval) == 0:
             # Do one gradient step
-            dqn_update(q_net, q_target_net, optimizer, replay_buffer, batch_size, gamma=gamma)
+            dqn_update_no_target(q_net, optimizer, replay_buffer, batch_size, gamma=gamma)
 
         if (current_step % evaluation_interval) == 0:
             print()
@@ -224,27 +196,4 @@ def run_dqn(
 
 
 if __name__ == "__main__":  # pragma: no cover
-    # Tuned hyperparameters from the RL Zoo3 of the Stable Baselines3 library
-    # https://github.com/DLR-RM/rl-baselines3-zoo/blob/master/hyperparams/dqn.yml
-    run_dqn(
-        env_id="CartPole-v1",
-        replay_buffer_size=100_000,
-        # Note: you can remove the target network
-        # by setting target_network_update_interval=1
-        target_network_update_interval=10,
-        learning_starts=1000,
-        exploration_initial_eps=1.0,
-        exploration_final_eps=0.04,
-        exploration_fraction=0.1,
-        n_timesteps=80_000,
-        update_interval=2,
-        learning_rate=1e-3,
-        batch_size=64,
-        gamma=0.99,
-        n_eval_episodes=10,
-        evaluation_interval=5000,
-        # No exploration during evaluation
-        # (deteministic policy)
-        eval_exploration_rate=0.0,
-        seed=2022,
-    )
+    run_dqn_no_target()
