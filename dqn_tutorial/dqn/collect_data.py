@@ -51,26 +51,31 @@ def collect_one_step(
     replay_buffer: ReplayBuffer,
     obs: np.ndarray,
     exploration_rate: float = 0.1,
+    verbose: int = 0,
 ) -> np.ndarray:
     """
     Collect one transition and fill the replay buffer following an epsilon greedy policy.
 
     :param env: The environment object.
     :param q_net: Q-network for estimating the q value
+    :param replay_buffer: Replay buffer to store the new transitions.
+    :param obs: The current observation.
     :param exploration_rate: Current rate of exploration (in [0, 1], 0 means no exploration),
         probability to select a random action,
         this is "epsilon".
-    :param replay_buffer: Replay buffer to store the new transitions.
-    :param obs: The current observation.
+    :param verbose: The verbosity level (1 to print some info).
     :return: The last observation (important when collecting data multiple times).
     """
     assert isinstance(env.action_space, spaces.Discrete)
 
     action = epsilon_greedy_action_selection(q_net, obs, exploration_rate, env.action_space)
-    next_obs, reward, terminated, truncated, _ = env.step(action)
+    next_obs, reward, terminated, truncated, info = env.step(action)
     replay_buffer.store_transition(obs, next_obs, action, float(reward), terminated)
     # Update current observation
     obs = next_obs
+
+    if "episode" in info and verbose >= 1:
+        print(f"Episode return={float(info['episode']['r']):.2f} length={int(info['episode']['l']):.2f}")
 
     done = terminated or truncated
     if done:

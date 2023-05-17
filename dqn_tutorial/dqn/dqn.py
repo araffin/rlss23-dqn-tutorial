@@ -172,6 +172,7 @@ def run_dqn(
 
     # Create the environment
     env = gym.make(env_id)
+    env = gym.wrappers.RecordEpisodeStatistics(env)
     assert isinstance(env.observation_space, spaces.Box)
     assert isinstance(env.action_space, spaces.Discrete)
     env.action_space.seed(seed)
@@ -221,6 +222,7 @@ def run_dqn(
         if (current_step % evaluation_interval) == 0:
             print()
             print(f"Evaluation at step {current_step}:")
+            print(f"exploration_rate={exploration_rate:.2f}")
             # Evaluate the current greedy policy (deterministic policy)
             evaluate_policy(eval_env, q_net, n_eval_episodes, eval_exploration_rate=eval_exploration_rate)
     return q_net
@@ -274,4 +276,27 @@ if __name__ == "__main__":  # pragma: no cover
     #     # (deteministic policy)
     #     eval_exploration_rate=0.0,
     #     seed=2022,
+    # )
+
+    # Same, for the MountainCar-v0 environment
+    # run_dqn(
+    #     env_id="MountainCar-v0",
+    #     replay_buffer_size=10_000,
+    #     # Note: you can remove the target network
+    #     # by setting target_network_update_interval=1
+    #     target_network_update_interval=600,
+    #     learning_starts=1000,
+    #     exploration_initial_eps=1.0,
+    #     exploration_final_eps=0.07,
+    #     exploration_fraction=0.15,
+    #     n_timesteps=200_000,
+    #     update_interval=16,
+    #     learning_rate=4e-3,
+    #     batch_size=128,
+    #     gamma=0.98,
+    #     n_eval_episodes=10,
+    #     evaluation_interval=20000,
+    #     # With noise during evaluation
+    #     eval_exploration_rate=0.07,
+    #     seed=2023,
     # )
