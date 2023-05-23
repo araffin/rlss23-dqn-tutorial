@@ -137,7 +137,7 @@ def run_dqn(
 ) -> QNetwork:
     """
     Run Deep Q-Learning (DQN) on a given environment.
-    (without target network)
+    (with a target network)
 
     :param env_id: Name of the environment
     :param replay_buffer_size: Max capacity of the replay buffer
