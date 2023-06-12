@@ -75,7 +75,7 @@ def collect_one_step(
     obs = next_obs
 
     if "episode" in info and verbose >= 1:
-        print(f"Episode return={float(info['episode']['r']):.2f} length={int(info['episode']['l']):.2f}")
+        print(f"Episode return={float(info['episode']['r']):.2f} length={int(info['episode']['l'])}")
 
     done = terminated or truncated
     if done:
