@@ -128,6 +128,7 @@ def run_dqn(
     learning_rate: float = 3e-4,
     batch_size: int = 64,
     gamma: float = 0.99,
+    n_hidden_units: int = 64,
     n_eval_episodes: int = 10,
     evaluation_interval: int = 1000,
     eval_exploration_rate: float = 0.0,
@@ -157,6 +158,8 @@ def run_dqn(
     :param learning_rate: The learning rate to use for the optimizer
     :param batch_size: The minibatch size
     :param gamma: The discount factor
+    :param n_hidden_units: Number of units for each hidden layer
+        of the Q-Network.
     :param n_eval_episodes: The number of episodes to evaluate the policy on
     :param evaluation_interval: How often to evaluate the policy
     :param eval_exploration_rate: The exploration rate to use during evaluation
@@ -172,6 +175,8 @@ def run_dqn(
 
     # Create the environment
     env = gym.make(env_id)
+    # For highway env
+    env = gym.wrappers.FlattenObservation(env)
     env = gym.wrappers.RecordEpisodeStatistics(env)
     assert isinstance(env.observation_space, spaces.Box)
     assert isinstance(env.action_space, spaces.Discrete)
@@ -179,15 +184,21 @@ def run_dqn(
 
     # Create the evaluation environment
     eval_env = gym.make(env_id, render_mode=eval_render_mode)
+    eval_env = gym.wrappers.FlattenObservation(eval_env)
     eval_env.reset(seed=seed)
     eval_env.action_space.seed(seed)
 
     # Create the q-network
-    q_net = QNetwork(env.observation_space, env.action_space)
+    q_net = QNetwork(env.observation_space, env.action_space, n_hidden_units=n_hidden_units)
     # Create the target network
-    q_target_net = QNetwork(env.observation_space, env.action_space)
+    q_target_net = QNetwork(env.observation_space, env.action_space, n_hidden_units=n_hidden_units)
     # Copy the parameters of the q-network to the target network
     q_target_net.load_state_dict(q_net.state_dict())
+
+    # For flappy bird
+    if env.observation_space.dtype == np.float64:
+        q_net.double()
+        q_target_net.double()
 
     # Create the optimizer, we only optimize the parameters of the q-network
     optimizer = th.optim.Adam(q_net.parameters(), lr=learning_rate)
@@ -206,7 +217,14 @@ def run_dqn(
         )
         # Do one step in the environment following an epsilon-greedy policy
         # and store the transition in the replay buffer
-        obs = collect_one_step(env, q_net, replay_buffer, obs, exploration_rate=exploration_rate)
+        obs = collect_one_step(
+            env,
+            q_net,
+            replay_buffer,
+            obs,
+            exploration_rate=exploration_rate,
+            verbose=0,
+        )
 
         # Update the target network
         # by copying the parameters from the Q-network every target_network_update_interval steps
@@ -231,28 +249,28 @@ def run_dqn(
 if __name__ == "__main__":  # pragma: no cover
     # Tuned hyperparameters from the RL Zoo3 of the Stable Baselines3 library
     # https://github.com/DLR-RM/rl-baselines3-zoo/blob/master/hyperparams/dqn.yml
-    run_dqn(
-        env_id="CartPole-v1",
-        replay_buffer_size=100_000,
-        # Note: you can remove the target network
-        # by setting target_network_update_interval=1
-        target_network_update_interval=10,
-        learning_starts=1000,
-        exploration_initial_eps=1.0,
-        exploration_final_eps=0.04,
-        exploration_fraction=0.1,
-        n_timesteps=80_000,
-        update_interval=2,
-        learning_rate=1e-3,
-        batch_size=64,
-        gamma=0.99,
-        n_eval_episodes=10,
-        evaluation_interval=5000,
-        # No exploration during evaluation
-        # (deteministic policy)
-        eval_exploration_rate=0.0,
-        seed=2022,
-    )
+    # run_dqn(
+    #     env_id="CartPole-v1",
+    #     replay_buffer_size=100_000,
+    #     # Note: you can remove the target network
+    #     # by setting target_network_update_interval=1
+    #     target_network_update_interval=10,
+    #     learning_starts=1000,
+    #     exploration_initial_eps=1.0,
+    #     exploration_final_eps=0.04,
+    #     exploration_fraction=0.1,
+    #     n_timesteps=80_000,
+    #     update_interval=2,
+    #     learning_rate=1e-3,
+    #     batch_size=64,
+    #     gamma=0.99,
+    #     n_eval_episodes=10,
+    #     evaluation_interval=5000,
+    #     # No exploration during evaluation
+    #     # (deteministic policy)
+    #     eval_exploration_rate=0.0,
+    #     seed=2022,
+    # )
 
     # Same, for the LunarLander-v2 environment
     # run_dqn(
@@ -300,3 +318,52 @@ if __name__ == "__main__":  # pragma: no cover
     #     eval_exploration_rate=0.07,
     #     seed=2023,
     # )
+
+    # For highway-fast env
+    # import highway_env  noqa: F401
+    #
+    # run_dqn(
+    #     env_id="highway-fast-v0",
+    #     n_timesteps=20_000,
+    #     # policy_kwargs=dict(net_arch=[256, 256]),
+    #     learning_rate=5e-4,
+    #     replay_buffer_size=15_000,
+    #     learning_starts=200,
+    #     batch_size=32,
+    #     gamma=0.8,
+    #     update_interval=4,
+    #     target_network_update_interval=50,
+    #     n_eval_episodes=2,
+    #     evaluation_interval=500,
+    #     # No noise during evaluation
+    #     eval_exploration_rate=0.0,
+    #     seed=2023,
+    #     eval_render_mode="human",
+    # )
+
+    import flappy_bird_gymnasium  # noqa: F401
+
+    run_dqn(
+        env_id="FlappyBird-v0",
+        replay_buffer_size=100_000,
+        # Note: you can remove the target network
+        # by setting target_network_update_interval=1
+        target_network_update_interval=250,
+        learning_starts=10_000,
+        exploration_initial_eps=1.0,
+        exploration_final_eps=0.03,
+        exploration_fraction=0.1,
+        n_timesteps=500_000,
+        update_interval=4,
+        learning_rate=1e-3,
+        batch_size=128,
+        gamma=0.98,
+        n_eval_episodes=2,
+        evaluation_interval=50000,
+        n_hidden_units=256,
+        # No exploration during evaluation
+        # (deteministic policy)
+        eval_exploration_rate=0.0,
+        seed=2023,
+        eval_render_mode="human",
+    )
