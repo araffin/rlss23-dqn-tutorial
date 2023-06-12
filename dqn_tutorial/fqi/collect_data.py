@@ -51,7 +51,7 @@ def collect_data(env_id: str, n_steps: int = 50_000) -> OfflineData:
         next_observations[idx, :] = next_obs
         actions[idx, :] = action
         rewards[idx] = reward
-        # Only record true termination (timeout will never happened with real data)
+        # Only record true termination (timeouts are artificial terminations)
         terminateds[idx] = terminated
         obs = next_obs
         # Check if the episode is over
