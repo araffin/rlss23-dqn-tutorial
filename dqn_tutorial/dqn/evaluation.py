@@ -31,7 +31,7 @@ def evaluate_policy(
 
     # Setup video recorder
     video_recorder = None
-    if video_name is not None and env.render_mode == "rgb_array":
+    if video_name is not None and eval_env.render_mode == "rgb_array":
         video_path = Path(__file__).parent.parent.parent / "logs" / "videos" / video_name
         video_path.parent.mkdir(parents=True, exist_ok=True)
 
