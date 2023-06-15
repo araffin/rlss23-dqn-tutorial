@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import Optional
 
@@ -36,7 +35,7 @@ def evaluate_policy(
         video_path.parent.mkdir(parents=True, exist_ok=True)
 
         video_recorder = VideoRecorder(
-            env=env,
+            env=eval_env,
             base_path=str(video_path),
         )
 
