@@ -5,7 +5,8 @@ import numpy as np
 import torch as th
 from gymnasium import spaces
 
-from dqn_tutorial.dqn.collect_data import collect_one_step, epsilon_greedy_action_selection, linear_schedule
+from dqn_tutorial.dqn.collect_data import collect_one_step, linear_schedule
+from dqn_tutorial.dqn.evaluation import evaluate_policy
 from dqn_tutorial.dqn.q_network import QNetwork
 from dqn_tutorial.dqn.replay_buffer import ReplayBuffer
 
@@ -65,45 +66,6 @@ def dqn_update_no_target(
     loss.backward()
     # Update the parameters of the q-network
     optimizer.step()
-
-
-def evaluate_policy(eval_env: gym.Env, q_net: QNetwork, n_eval_episodes: int, eval_exploration_rate: float = 0.0) -> None:
-    """
-    Evaluate the policy by computing the average episode reward
-    over n_eval_episodes episodes.
-
-    :param eval_env: The environment to evaluate the policy on
-    :param q_net: The Q-network to evaluate
-    :param n_eval_episodes: The number of episodes to evaluate the policy on
-    :param eval_exploration_rate: The exploration rate to use during evaluation
-    """
-    assert isinstance(eval_env.action_space, spaces.Discrete)
-
-    episode_returns = []
-    for _ in range(n_eval_episodes):
-        obs, _ = eval_env.reset()
-        total_reward = 0.0
-        done = False
-        while not done:
-            # Select the action according to the policy
-            action = epsilon_greedy_action_selection(
-                q_net,
-                obs,
-                exploration_rate=eval_exploration_rate,
-                action_space=eval_env.action_space,
-            )
-            # Render
-            if eval_env.render_mode is not None:  # pragma: no cover
-                eval_env.render()
-            # Do one step in the environment
-            obs, reward, terminated, truncated, _ = eval_env.step(action)
-            total_reward += float(reward)
-
-            done = terminated or truncated
-        # Store the episode reward
-        episode_returns.append(total_reward)
-    # Print mean and std of the episode rewards
-    print(f"Mean episode reward: {np.mean(episode_returns):.2f} +/- {np.std(episode_returns):.2f}")
 
 
 def run_dqn_no_target(
