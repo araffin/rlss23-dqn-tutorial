@@ -2,7 +2,7 @@
 
 Website: https://rlsummerschool.com/
 
-Slides: https://araffin.github.io/
+Slides: https://araffin.github.io/slides/dqn-tutorial/
 
 Stable-Baselines3 repo: https://github.com/DLR-RM/stable-baselines3
 
