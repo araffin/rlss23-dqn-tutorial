@@ -2,44 +2,12 @@
 
 Website: https://rlsummerschool.com/
 
+Slides: https://araffin.github.io/
 
-## Tasks
+Stable-Baselines3 repo: https://github.com/DLR-RM/stable-baselines3
 
-### Fitted Q-Iteration (FQI) - 30 minutes
+## Content
 
-1. `collect_data()` function (Gym API, 5 minutes)
-2. Fitted Q-Iteration (FQI) (25 minutes):
-  - `get_q_values()` function
-  - `evaluate()` function
-  - update rule using TD(0) target
-  - play with different models/features_extractor
-
-### Deep Q-Network (DQN) - 1h30
-
-#### Mix offline and online data
-
-3. Create the `ReplayBuffer` class
-4. Create the Q-network
-5. Epsilon-greedy data collection (re-using FQI)
-6. Write DQN update rule (no target network)
-
-Bonus: linear schedule?
-+ linear_schedule with fraction (reach final exploration before end of budget)
-
-#### With target network
-
-6. Add DQN target network and periodic copy
-
-Explore different value for the target update,
-use soft update instead of hard-copy.
-
-Compare to SB3/SBX results.
-Analyse learned q-value.
-
-Bonus: CNN and learn on Pong
-+ learn discretized version of upkie?
-
-#### DQN Extensions
-- Prioritized-Experience Replay (PER)?
-- Double DQN (DDQN)
-- noisy net
+1. Fitted Q-Iteration (FQI) [Colab Notebook](https://colab.research.google.com/github/araffin/rlss23-dqn/blob/main/notebooks/1_fitted_q_iteration_fqi.ipynb)
+2. Deep Q-Network (DQN) Part I: DQN Components: Replay Buffer, Q-Network, ... [Colab Notebook](https://colab.research.google.com/github/araffin/rlss23-dqn/blob/main/notebooks/2_deep_q_network_dqn_components.ipynb)
+3. Deep Q-Network (DQN) Part II: DQN Update and Training Loop [Colab Notebook](https://colab.research.google.com/github/araffin/rlss23-dqn/blob/main/notebooks/3_deep_q_network_dqn_update.ipynb)
