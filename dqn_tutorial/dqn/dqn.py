@@ -211,28 +211,28 @@ def run_dqn(
 if __name__ == "__main__":  # pragma: no cover
     # Tuned hyperparameters from the RL Zoo3 of the Stable Baselines3 library
     # https://github.com/DLR-RM/rl-baselines3-zoo/blob/master/hyperparams/dqn.yml
-    # run_dqn(
-    #     env_id="CartPole-v1",
-    #     replay_buffer_size=100_000,
-    #     # Note: you can remove the target network
-    #     # by setting target_network_update_interval=1
-    #     target_network_update_interval=10,
-    #     learning_starts=1000,
-    #     exploration_initial_eps=1.0,
-    #     exploration_final_eps=0.04,
-    #     exploration_fraction=0.1,
-    #     n_timesteps=80_000,
-    #     update_interval=2,
-    #     learning_rate=1e-3,
-    #     batch_size=64,
-    #     gamma=0.99,
-    #     n_eval_episodes=10,
-    #     evaluation_interval=5000,
-    #     # No exploration during evaluation
-    #     # (deteministic policy)
-    #     eval_exploration_rate=0.0,
-    #     seed=2022,
-    # )
+    run_dqn(
+        env_id="CartPole-v1",
+        replay_buffer_size=100_000,
+        # Note: you can remove the target network
+        # by setting target_network_update_interval=1
+        target_network_update_interval=10,
+        learning_starts=1000,
+        exploration_initial_eps=1.0,
+        exploration_final_eps=0.04,
+        exploration_fraction=0.1,
+        n_timesteps=80_000,
+        update_interval=2,
+        learning_rate=1e-3,
+        batch_size=64,
+        gamma=0.99,
+        n_eval_episodes=10,
+        evaluation_interval=5000,
+        # No exploration during evaluation
+        # (deteministic policy)
+        eval_exploration_rate=0.0,
+        seed=2022,
+    )
 
     # Same, for the LunarLander-v2 environment
     # run_dqn(
@@ -303,29 +303,29 @@ if __name__ == "__main__":  # pragma: no cover
     #     eval_render_mode="human",
     # )
 
-    import flappy_bird_gymnasium  # noqa: F401
-
-    run_dqn(
-        env_id="FlappyBird-v0",
-        replay_buffer_size=100_000,
-        # Note: you can remove the target network
-        # by setting target_network_update_interval=1
-        target_network_update_interval=250,
-        learning_starts=10_000,
-        exploration_initial_eps=1.0,
-        exploration_final_eps=0.03,
-        exploration_fraction=0.1,
-        n_timesteps=500_000,
-        update_interval=4,
-        learning_rate=1e-3,
-        batch_size=128,
-        gamma=0.98,
-        n_eval_episodes=2,
-        evaluation_interval=50000,
-        n_hidden_units=256,
-        # No exploration during evaluation
-        # (deteministic policy)
-        eval_exploration_rate=0.0,
-        seed=2023,
-        eval_render_mode="human",
-    )
+    # import flappy_bird_gymnasium  # noqa: F401
+    #
+    # run_dqn(
+    #     env_id="FlappyBird-v0",
+    #     replay_buffer_size=100_000,
+    #     # Note: you can remove the target network
+    #     # by setting target_network_update_interval=1
+    #     target_network_update_interval=250,
+    #     learning_starts=10_000,
+    #     exploration_initial_eps=1.0,
+    #     exploration_final_eps=0.03,
+    #     exploration_fraction=0.1,
+    #     n_timesteps=500_000,
+    #     update_interval=4,
+    #     learning_rate=1e-3,
+    #     batch_size=128,
+    #     gamma=0.98,
+    #     n_eval_episodes=2,
+    #     evaluation_interval=50000,
+    #     n_hidden_units=256,
+    #     # No exploration during evaluation
+    #     # (deteministic policy)
+    #     eval_exploration_rate=0.0,
+    #     seed=2023,
+    #     eval_render_mode="human",
+    # )
