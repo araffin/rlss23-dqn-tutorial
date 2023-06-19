@@ -13,9 +13,10 @@ import numpy as np
 from gymnasium import spaces
 from sklearn import tree
 from sklearn.base import RegressorMixin
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.exceptions import NotFittedError
 from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import PolynomialFeatures
 
@@ -126,26 +127,28 @@ if __name__ == "__main__":  # pragma: no cover
     # Max number of iterations
     n_iterations = 50
     # How often do we evaluate the learned model
-    eval_freq = 1
+    eval_freq = 5
     # How many episodes to evaluate every eval-freq
-    n_eval_episodes = 1
+    n_eval_episodes = 2
     # discount factor
     gamma = 0.99
     # For visualization: "human", "rgb_array" or None
     render_mode = "human"
     # Scikit learn model to use
-    model_name = "linear"
+    model_name = "knn"
 
     model_class = {
         "linear": LinearRegression,
-        "mlp": partial(MLPRegressor, hidden_layer_sizes=(64, 64)),
+        "mlp": partial(MLPRegressor, hidden_layer_sizes=(64, 64), early_stopping=True, n_iter_no_change=2),
         "tree": partial(tree.DecisionTreeRegressor),
         "forest": RandomForestRegressor,
+        "knn": partial(KNeighborsRegressor, n_neighbors=30),
+        "tree_boost": partial(GradientBoostingRegressor, n_estimators=50),
     }[model_name]
 
     # Optionally: extract features before feeding the input to the model
-    features_extractor = PolynomialFeatures(degree=2)
-    # features_extractor = None
+    # features_extractor = PolynomialFeatures(degree=2)
+    features_extractor = None
 
     env_id = "CartPole-v1"
     output_filename = Path("data") / f"{env_id}_data.npz"
