@@ -37,8 +37,8 @@ write_to = "dqn_tutorial/_version.py"
 [project.optional-dependencies]
 tests = [
     # Run tests and coverage
-    # "pytest",
-    # "pytest-cov",
+    "pytest",
+    "pytest-cov",
     # Type check
     "mypy",
     # Lint code (flake8 replacement)
