@@ -8,6 +8,8 @@ Slides: https://araffin.github.io/slides/dqn-tutorial/
 
 Stable-Baselines3 repo: https://github.com/DLR-RM/stable-baselines3
 
+RL Virtual School 2021: https://github.com/araffin/rl-handson-rlvs21
+
 ## Content
 
 1. Fitted Q-Iteration (FQI) [Colab Notebook](https://colab.research.google.com/github/araffin/rlss23-dqn-tutorial/blob/main/notebooks/1_fitted_q_iteration_fqi.ipynb)
