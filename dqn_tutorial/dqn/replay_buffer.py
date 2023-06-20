@@ -11,7 +11,7 @@ class TorchReplayBufferSamples:
     next_observations: th.Tensor
     actions: th.Tensor
     rewards: th.Tensor
-    terminated: th.Tensor
+    terminateds: th.Tensor
 
 
 @dataclass
@@ -24,7 +24,7 @@ class ReplayBufferSamples:
     next_observations: np.ndarray
     actions: np.ndarray
     rewards: np.ndarray
-    terminated: np.ndarray
+    terminateds: np.ndarray
 
     def to_torch(self, device: str = "cpu") -> TorchReplayBufferSamples:
         """
@@ -38,7 +38,7 @@ class ReplayBufferSamples:
             next_observations=th.as_tensor(self.next_observations, device=device),
             actions=th.as_tensor(self.actions, device=device),
             rewards=th.as_tensor(self.rewards, device=device),
-            terminated=th.as_tensor(self.terminated, device=device),
+            terminateds=th.as_tensor(self.terminateds, device=device),
         )
 
 
@@ -71,7 +71,7 @@ class ReplayBuffer:
         action_dim = 1
         self.actions = np.zeros((buffer_size, action_dim), dtype=action_space.dtype)
         self.rewards = np.zeros((buffer_size,), dtype=np.float32)
-        self.terminated = np.zeros((buffer_size,), dtype=bool)
+        self.terminateds = np.zeros((buffer_size,), dtype=bool)
 
     def store_transition(
         self,
@@ -96,7 +96,7 @@ class ReplayBuffer:
         self.next_observations[self.current_idx] = next_obs
         self.actions[self.current_idx] = action
         self.rewards[self.current_idx] = reward
-        self.terminated[self.current_idx] = terminated
+        self.terminateds[self.current_idx] = terminated
         # Update the pointer, this is a ring buffer, we start from zero again when the buffer is full
         self.current_idx += 1
         if self.current_idx == self.buffer_size:
@@ -117,5 +117,5 @@ class ReplayBuffer:
             self.next_observations[batch_indices],
             self.actions[batch_indices],
             self.rewards[batch_indices],
-            self.terminated[batch_indices],
+            self.terminateds[batch_indices],
         )

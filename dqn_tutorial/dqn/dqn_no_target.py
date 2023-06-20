@@ -40,7 +40,7 @@ def dqn_update_no_target(
         # (batch_size,)
         next_q_values, _ = next_q_values.max(dim=1)
         # If the episode is terminated, set the target to the reward
-        should_bootstrap = th.logical_not(replay_data.terminated)
+        should_bootstrap = th.logical_not(replay_data.terminateds)
         # 1-step TD target
         td_target = replay_data.rewards + gamma * next_q_values * should_bootstrap
 
