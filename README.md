@@ -1,6 +1,6 @@
 # Reinforcement Learning Summer School 2023 - DQN Tutorial
 
-<img src="https://araffin.github.io/slides/dqn-tutorial/images/q_learning/dqn_pirate_cover.png" align="right" width="40%"/>
+<img style="background:white;" src="https://araffin.github.io/slides/dqn-tutorial/images/q_learning/dqn_pirate_cover.png" align="right" width="40%"/>
 
 Website: https://rlsummerschool.com/
 
