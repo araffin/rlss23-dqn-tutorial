@@ -59,8 +59,8 @@ def get_q_values(
     features_extractor: Optional[PolynomialFeatures] = None,
 ) -> np.ndarray:
     """
-    Retrieve the q-values for a set of observations.
-    qf(q_t, action) for all possible actions.
+    Retrieve the q-values for a set of observations (=states in the theory).
+    qf(states, action) for all possible actions.
 
     :param model: Q-value estimator
     :param obs: A batch of observations
