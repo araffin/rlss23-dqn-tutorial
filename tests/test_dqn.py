@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import gymnasium as gym
 import numpy as np
 import torch as th
@@ -5,6 +7,7 @@ import torch as th
 from dqn_tutorial.dqn import QNetwork, ReplayBuffer, collect_one_step, linear_schedule
 from dqn_tutorial.dqn.dqn import run_dqn
 from dqn_tutorial.dqn.dqn_no_target import run_dqn_no_target
+from dqn_tutorial.dqn.evaluation import evaluate_policy
 
 
 def test_q_net():
@@ -67,3 +70,17 @@ def test_dqn_run():
 
 def test_dqn_notarget_run():
     run_dqn_no_target(n_timesteps=1000, evaluation_interval=500)
+
+
+def test_record_video():
+    env = gym.make("CartPole-v1", render_mode="rgb_array")
+    q_net = QNetwork(env.observation_space, env.action_space)
+
+    video_path = Path(__file__).parent.parent / "logs" / "videos" / "test_video_record.mp4"
+    if video_path.is_file():
+        video_path.unlink()
+
+    evaluate_policy(env, q_net, n_eval_episodes=5, video_name="test_video_record")
+
+    assert video_path.is_file()
+    video_path.unlink()

@@ -303,7 +303,7 @@ if __name__ == "__main__":  # pragma: no cover
     #     eval_render_mode="human",
     # )
 
-    # import flappy_bird_gymnasium  # noqa: F401
+    # import flappy_bird_gymnasium
     #
     # run_dqn(
     #     env_id="FlappyBird-v0",

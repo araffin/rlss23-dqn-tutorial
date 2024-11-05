@@ -9,9 +9,7 @@ packages = ["dqn_tutorial"]
 name = "dqn_tutorial"
 # version = "0.0.1", version is determined by setuptools_scm
 dynamic = ["version"]
-authors = [
-  { name="Antonin Raffin", email="antonin.raffin@dlr.de" },
-]
+authors = [{ name = "Antonin Raffin", email = "antonin.raffin@dlr.de" }]
 description = "A small example package"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -21,14 +19,15 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 dependencies = [
     "numpy",
-    "gymnasium[classic-control]>=0.28.1,<1.0",
+    "gymnasium[classic-control,other]>=0.29.1,<1.1.0",
     "scikit-learn",
-    "torch>=1.7.0",
+    "torch>=2.4.0",
 ]
 
 [tool.setuptools_scm]
@@ -41,10 +40,8 @@ tests = [
     "pytest-cov",
     # Type check
     "mypy",
-    # Lint code (flake8 replacement)
+    # Lint code and format
     "ruff",
-    # Sort imports
-    "isort>=5.0",
     # Reformat
     "black",
 ]
@@ -58,25 +55,23 @@ tests = [
 line-length = 127
 # Assume Python 3.8
 target-version = "py38"
+
+[tool.ruff.lint]
 # See https://beta.ruff.rs/docs/rules/
 select = ["E", "F", "B", "UP", "C90", "RUF"]
 # Ignore explicit stacklevel`
 ignore = ["B028"]
 
-[tool.ruff.per-file-ignores]
+[tool.lint.ruff.per-file-ignores]
 
 
-[tool.ruff.mccabe]
+[tool.lint.ruff.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
 max-complexity = 15
 
 [tool.black]
 line-length = 127
 
-[tool.isort]
-profile = "black"
-line_length = 127
-src_paths = ["dqn_tutorial"]
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -90,23 +85,21 @@ show_error_codes = true
 
 [tool.pytest.ini_options]
 # Deterministic ordering for tests; useful for pytest-xdist.
-env = [
-	"PYTHONHASHSEED=0"
-]
+# env = ["PYTHONHASHSEED=0"]
 
-filterwarnings = [
-]
+filterwarnings = []
 markers = [
-    "expensive: marks tests as expensive (deselect with '-m \"not expensive\"')"
+    "expensive: marks tests as expensive (deselect with '-m \"not expensive\"')",
 ]
 
 [tool.coverage.run]
 disable_warnings = ["couldnt-parse"]
 branch = false
-omit = [
-  "tests/*",
-  "dqn_tutorial/_version.py",
-]
+omit = ["tests/*", "dqn_tutorial/_version.py"]
 
 [tool.coverage.report]
-exclude_lines = [ "pragma: no cover", "raise NotImplementedError()", "if typing.TYPE_CHECKING:"]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError()",
+    "if typing.TYPE_CHECKING:",
+]
