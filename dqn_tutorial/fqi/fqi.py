@@ -4,6 +4,7 @@ as described in "Tree-based batch mode reinforcement learning"
 by Ernst et al. and
 "Neural fitted Q iteration" by Martin Riedmiller.
 """
+
 from functools import partial
 from pathlib import Path
 from typing import Optional
