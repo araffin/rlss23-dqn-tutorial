@@ -25,7 +25,7 @@ classifiers = [
 ]
 dependencies = [
     "numpy",
-    "gymnasium[classic-control]>=0.29.1,<1.1.0",
+    "gymnasium[classic-control,other]>=0.29.1,<1.1.0",
     "scikit-learn",
     "torch>=2.4.0",
 ]
