@@ -4,6 +4,8 @@
 
 ## From Tabular Q-Learning to DQN
 
+Blog post: https://araffin.github.io/post/rl102/
+
 Website: https://rlsummerschool.com/
 
 Slides: https://araffin.github.io/slides/dqn-tutorial/
