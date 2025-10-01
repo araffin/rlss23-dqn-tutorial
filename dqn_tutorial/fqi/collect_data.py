@@ -44,7 +44,7 @@ def collect_data(env_id: str, n_steps: int = 50_000) -> OfflineData:
     for idx in range(n_steps):
         # Sample a random action
         action = env.action_space.sample()
-        next_obs, reward, terminated, truncated, info_ = env.step(action)
+        next_obs, reward, terminated, truncated, _info = env.step(action)
 
         # Store the transition
         observations[idx, :] = obs
@@ -80,7 +80,7 @@ def save_data(data: OfflineData, path: Path) -> None:
 
     np.savez(
         path,
-        **dict(
+        **dict(  # type: ignore[arg-type]
             observations=data.observations,
             next_observations=data.next_observations,
             rewards=data.rewards,

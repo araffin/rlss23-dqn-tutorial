@@ -6,6 +6,6 @@ __all__ = [
     "QNetwork",
     "ReplayBuffer",
     "collect_one_step",
-    "linear_schedule",
     "epsilon_greedy_action_selection",
+    "linear_schedule",
 ]
