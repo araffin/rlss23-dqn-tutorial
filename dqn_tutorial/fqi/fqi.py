@@ -7,7 +7,6 @@ by Ernst et al. and
 
 from functools import partial
 from pathlib import Path
-from typing import Optional
 
 import gymnasium as gym
 import numpy as np
@@ -27,7 +26,7 @@ from dqn_tutorial.fqi import load_data
 def create_model_input(
     obs: np.ndarray,
     actions: np.ndarray,
-    features_extractor: Optional[PolynomialFeatures] = None,
+    features_extractor: PolynomialFeatures | None = None,
 ) -> np.ndarray:
     """
     Concatenate observation (batch_size, n_features)
@@ -57,7 +56,7 @@ def get_q_values(
     model: RegressorMixin,
     obs: np.ndarray,
     n_actions: int,
-    features_extractor: Optional[PolynomialFeatures] = None,
+    features_extractor: PolynomialFeatures | None = None,
 ) -> np.ndarray:
     """
     Retrieve the q-values for a set of observations (=states in the theory).
@@ -93,7 +92,7 @@ def evaluate(
     model: RegressorMixin,
     env: gym.Env,
     n_eval_episodes: int = 10,
-    features_extractor: Optional[PolynomialFeatures] = None,
+    features_extractor: PolynomialFeatures | None = None,
 ) -> None:
     episode_returns, episode_reward = [], 0.0
     total_episodes = 0

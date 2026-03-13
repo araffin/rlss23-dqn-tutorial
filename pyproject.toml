@@ -67,8 +67,8 @@ tests = [
 [tool.ruff]
 # Same as Black.
 line-length = 127
-# Assume Python 3.8
-target-version = "py38"
+# Assume Python 3.10
+target-version = "py310"
 
 [tool.ruff.lint]
 # See https://beta.ruff.rs/docs/rules/
@@ -85,7 +85,7 @@ max-complexity = 15
 
 [tool.black]
 line-length = 127
-
+target-version = ["py310"]
 
 [tool.mypy]
 ignore_missing_imports = true

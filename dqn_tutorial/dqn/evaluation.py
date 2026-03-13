@@ -1,6 +1,5 @@
 import warnings
 from pathlib import Path
-from typing import Optional
 
 import gymnasium as gym
 import numpy as np
@@ -24,7 +23,7 @@ def evaluate_policy(
     q_net: QNetwork,
     n_eval_episodes: int,
     eval_exploration_rate: float = 0.0,
-    video_name: Optional[str] = None,
+    video_name: str | None = None,
 ) -> None:
     """
     Evaluate the policy by computing the average episode reward
