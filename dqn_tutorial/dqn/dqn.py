@@ -1,5 +1,3 @@
-from typing import Optional
-
 import gymnasium as gym
 import numpy as np
 import torch as th
@@ -96,7 +94,7 @@ def run_dqn(
     eval_exploration_rate: float = 0.0,
     seed: int = 2023,
     # device: Union[th.device, str] = "cpu",
-    eval_render_mode: Optional[str] = None,  # "human", "rgb_array", None
+    eval_render_mode: str | None = None,  # "human", "rgb_array", None
 ) -> QNetwork:
     """
     Run Deep Q-Learning (DQN) on a given environment.

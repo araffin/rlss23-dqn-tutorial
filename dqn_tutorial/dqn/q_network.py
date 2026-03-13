@@ -1,5 +1,3 @@
-from typing import Type
-
 import torch as th
 import torch.nn as nn
 from gymnasium import spaces
@@ -23,7 +21,7 @@ class QNetwork(nn.Module):
         observation_space: spaces.Box,
         action_space: spaces.Discrete,
         n_hidden_units: int = 64,
-        activation_fn: Type[nn.Module] = nn.ReLU,
+        activation_fn: type[nn.Module] = nn.ReLU,
     ) -> None:
         super().__init__()
         # Assume 1d space
