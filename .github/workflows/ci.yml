@@ -37,13 +37,17 @@ jobs:
           . .venv/bin/activate
       - name: Lint with ruff
         run: |
+          . .venv/bin/activate
           make lint
       - name: Check codestyle
         run: |
+          . .venv/bin/activate
           make check-codestyle
       - name: Type check
         run: |
+          . .venv/bin/activate
           make type
       - name: Test with pytest
         run: |
+          . .venv/bin/activate
           make pytest
