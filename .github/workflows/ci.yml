@@ -34,20 +34,12 @@ jobs:
           # Use uv for faster downloads
           pip install uv
           uv sync --extra tests
-          . .venv/bin/activate
+          echo "$PWD/.venv/bin" >> $GITHUB_PATH
       - name: Lint with ruff
-        run: |
-          . .venv/bin/activate
-          make lint
+        run: make lint
       - name: Check codestyle
-        run: |
-          . .venv/bin/activate
-          make check-codestyle
+        run: make check-codestyle
       - name: Type check
-        run: |
-          . .venv/bin/activate
-          make type
+        run: make type
       - name: Test with pytest
-        run: |
-          . .venv/bin/activate
-          make pytest
+        run: make pytest
