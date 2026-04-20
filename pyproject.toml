@@ -10,7 +10,7 @@ name = "dqn_tutorial"
 # version = "0.0.1", version is determined by setuptools_scm
 dynamic = ["version"]
 authors = [{ name = "Antonin Raffin", email = "antonin.raffin@dlr.de" }]
-description = "A small example package"
+description = "DQN tutorial for RL summer school"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
@@ -116,4 +116,5 @@ exclude_lines = [
     "pragma: no cover",
     "raise NotImplementedError()",
     "if typing.TYPE_CHECKING:",
+    "if TYPE_CHECKING:",
 ]
