@@ -26,25 +26,14 @@ dependencies = [
     "numpy",
     "scikit-learn",
     "torch>=2.4.0",
-    "gymnasium[classic-control,other]>=0.29.1,<1.3.0",
+    "gymnasium[classic-control,other]>=0.29.1,<2.0",
+    "flappy-bird-gymnasium>=0.4.0",
 ]
 
 [dependency-groups]
 dev = [
     "jupyterlab>=4.5.6",
-]
-
-[tool.setuptools_scm]
-write_to = "dqn_tutorial/_version.py"
-
-[[tool.uv.index]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
-explicit = true
-
-[tool.uv.sources]
-torch = [
-  { index = "pytorch-cpu" },
+    "jupyter-black>=0.4.0",
 ]
 
 [project.optional-dependencies]
@@ -58,6 +47,20 @@ tests = [
     "ruff",
     # Reformat
     "black",
+]
+
+
+[tool.setuptools_scm]
+write_to = "dqn_tutorial/_version.py"
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu" },
 ]
 
 [project.urls]
