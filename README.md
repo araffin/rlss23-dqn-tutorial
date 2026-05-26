@@ -30,7 +30,7 @@ RL Summer School 2026: https://2026.rlsummerschool.com/
 ## Run Locally (instead of using Google colab)
 
 1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
-2. Run `uv run jupyter lab notebooks`
+2. Run `uv run --with jupyter jupyter lab notebooks`
 
 ## Solutions
 
