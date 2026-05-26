@@ -8,7 +8,7 @@ Blog post: https://araffin.github.io/post/rl102/
 
 Website: https://rlsummerschool.com/
 
-Slides: https://araffin.github.io/slides/dqn-tutorial/
+Slides: https://araffin.github.io/slides/rlss26-fqi-dqn/
 
 Stable-Baselines3 repo: https://github.com/DLR-RM/stable-baselines3
 
@@ -19,7 +19,7 @@ RL Summer School 2023: https://rlsummerschool.com/2023/
 RL Summer School 2026: https://2026.rlsummerschool.com/
 
 
-<img style="background:white;" src="https://araffin.github.io/slides/dqn-tutorial/images/dqn/dqn.png" align="center" width="80%"/>
+<img style="background:white;" src="https://araffin.github.io/slides/rlss26-fqi-dqn/images/rl102/dqn_cover.svg" align="center" width="80%"/>
 
 ## Content
 
