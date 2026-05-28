@@ -1,5 +1,8 @@
 LINT_PATHS=dqn_tutorial/ tests/
 
+open-notebook:
+	uv run --with jupyter jupyter lab notebooks
+
 pytest:
 	python3 -m pytest --cov-report html --cov-report term --cov=. -v --color=yes -m "not expensive"
 
@@ -35,4 +38,4 @@ check-codestyle:
 
 commit-checks: format type lint
 
-.PHONY: clean spelling doc lint format check-codestyle commit-checks
+.PHONY: clean spelling doc lint format check-codestyle commit-checks open-notebook
