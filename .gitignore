@@ -16,6 +16,7 @@ _build/
 *.pth
 .pytype/
 git_rewrite_commit_history.sh
+_attachment_mapping.json
 
 # Setuptools distribution and build folders.
 /dist/
